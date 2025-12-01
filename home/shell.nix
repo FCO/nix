@@ -9,6 +9,8 @@ _: {
       la = "ls -la";
       ".." = "cd ..";
       "nix-switch" = "sudo darwin-rebuild switch --flake ~/.config/nix";
+      "vi" = "vim";
+      "vim" = "nvim";
     };
   };
 

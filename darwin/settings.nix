@@ -24,6 +24,10 @@
         ShowStatusBar = true; # file count & disk space
       };
 
+      dock = {
+        autohide = true;
+      };
+
       NSGlobalDomain = {
         NSAutomaticSpellingCorrectionEnabled = false;
         NSAutomaticCapitalizationEnabled = false;

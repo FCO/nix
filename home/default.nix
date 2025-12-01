@@ -1,10 +1,9 @@
-{ primaryUser, ... }:
+{ primaryUser, nvimRepo, ... }:
 {
   imports = [
     ./packages.nix
     ./git.nix
     ./shell.nix
-    ./mise.nix
   ];
 
   home = {
@@ -16,5 +15,6 @@
 
     # create .hushlogin file to suppress login messages
     file.".hushlogin".text = "";
+    file.".config/nvim".source = nvimRepo;
   };
 }

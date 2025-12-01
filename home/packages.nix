@@ -5,15 +5,12 @@
       # dev tools
       curl
       vim
-      tmux
       htop
       tree
       ripgrep
-      gh
       zoxide
 
-      # programming languages
-      mise # node, deno, bun, rust, python, etc.
+      neovim
 
       # misc
       nil
@@ -26,6 +23,9 @@
       # fonts
       nerd-fonts.fira-code
       nerd-fonts.fira-mono
+
+      pokemonsay
+      coreutils
     ];
   };
 }

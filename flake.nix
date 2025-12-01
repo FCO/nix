@@ -26,19 +26,21 @@
       ...
     }@inputs:
     let
-      # TODO: replace with your username
-      primaryUser = "YOUR_USERNAME";
+      primaryUser = "fernando";
+      nvimRepo = builtins.fetchGit {
+        url   = "https://github.com/FCO/kickstart.nvim.git";
+        rev   = "f9085e5510e774461ec78748fe4605d8955de166";
+      };
+
     in
     {
-      # build darwin flake using:
-      # $ darwin-rebuild build --flake .#<name>
-      darwinConfigurations."my-macbook" = darwin.lib.darwinSystem {
+      darwinConfigurations."FCO" = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
           ./darwin
-          ./hosts/my-macbook/configuration.nix
+          ./hosts/FCO/configuration.nix
         ];
-        specialArgs = { inherit inputs self primaryUser; };
+        specialArgs = { inherit inputs self primaryUser nvimRepo; };
       };
 
     };

@@ -23,29 +23,22 @@
       "betterdisplay"
 
       # dev
-      "cursor"
-      "ghostty"
-      "visual-studio-code"
-      "zed"
+      "wezterm"
 
       # messaging
-      "discord"
-      "slack"
       "signal"
 
       # other
       "1password"
-      "anki"
-      "brave-browser"
-      "obsidian"
-      "protonvpn"
-      "spotify"
-      "thebrowsercompany-dia"
       "zen"
+
+      "orbstack"
+
     ];
     brews = [
       "docker"
       "colima"
+      "opencode"
     ];
     taps = [
       "nikitabobko/tap"

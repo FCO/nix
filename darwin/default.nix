@@ -3,6 +3,7 @@
   inputs,
   self,
   primaryUser,
+  nvimRepo,
   ...
 }:
 {
@@ -45,7 +46,7 @@
       ];
     };
     extraSpecialArgs = {
-      inherit inputs self primaryUser;
+      inherit inputs self primaryUser nvimRepo;
     };
   };
 
@@ -53,6 +54,18 @@
   system.primaryUser = primaryUser;
   users.users.${primaryUser} = {
     home = "/Users/${primaryUser}";
+    shell = pkgs.zsh;
+  };
+  users.users.fernanda = {
+    home = "/Users/fernanda";
+    shell = pkgs.zsh;
+  };
+  users.users.sophia = {
+    home = "/Users/sophia";
+    shell = pkgs.zsh;
+  };
+  users.users.aline = {
+    home = "/Users/aline";
     shell = pkgs.zsh;
   };
   environment = {
