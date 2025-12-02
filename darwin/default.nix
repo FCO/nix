@@ -53,11 +53,24 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
+
     users.${primaryUser} = {
       imports = [
         ../home
       ];
     };
+
+    # family users
+    users.fernanda = {
+      imports = [ ../home/users/fernanda.nix ];
+    };
+    users.sophia = {
+      imports = [ ../home/users/sophia.nix ];
+    };
+    users.aline = {
+      imports = [ ../home/users/aline.nix ];
+    };
+
     extraSpecialArgs = {
       inherit inputs self primaryUser nvimRepo;
     };
