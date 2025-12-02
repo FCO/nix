@@ -7,6 +7,12 @@ _: {
 
     # Welcome banner rendering random Gen1 Pokemon (WezTerm)
     initContent = ''
+      # zoxide init and alias cd -> z
+      if command -v zoxide >/dev/null 2>&1; then
+        eval "$(zoxide init zsh)"
+        alias cd='z'
+      fi
+
       if [[ $- == *i* ]]; then
         if command -v wezterm >/dev/null 2>&1; then
           if [ -x "$HOME/.nix-profile/bin/pokewelcome" ]; then
@@ -22,6 +28,9 @@ _: {
       "nix-switch" = "sudo darwin-rebuild switch --flake ~/.config/nix";
       "vi" = "vim";
       "vim" = "nvim";
+      ns = "nix-search";
+      zi = "zoxide query -i";
+      zri = "zoxide query -i --all";
     };
   };
 

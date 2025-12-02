@@ -119,50 +119,56 @@ run = ["layout floating"]
 '';
 
     file.".wezterm.lua".text = ''
-local wezterm = require 'wezterm'
-local act = wezterm.action
-return {
-  keys = {
-    {
-      key = 'k', mods = 'SUPER',
-      action = act.Multiple{
-        act.ClearScrollback 'ScrollbackAndViewport',
-        act.SendKey{ key = 'L', mods = 'CTRL' },
-      },
-    },
-    {
-      key = 'k', mods = 'CMD',
-      action = act.Multiple{
-        act.ClearScrollback 'ScrollbackAndViewport',
-        act.SendKey{ key = 'L', mods = 'CTRL' },
-      },
-    },
-  },
-}
-'';
+ local wezterm = require 'wezterm'
+ local act = wezterm.action
+ return {
+   font = wezterm.font_with_fallback({ 'FiraCode Nerd Font', 'FiraCode Nerd Font Mono', 'Fira Code' }),
+   font_size = 18.0,
+   keys = {
+     {
+       key = 'k', mods = 'SUPER',
+       action = act.Multiple{
+         act.ClearScrollback 'ScrollbackAndViewport',
+         act.SendKey{ key = 'L', mods = 'CTRL' },
+       },
+     },
+     {
+       key = 'k', mods = 'CMD',
+       action = act.Multiple{
+         act.ClearScrollback 'ScrollbackAndViewport',
+         act.SendKey{ key = 'L', mods = 'CTRL' },
+       },
+     },
+   },
+ }
+ '';
+
 
     file.".config/wezterm/wezterm.lua".text = ''
-local wezterm = require 'wezterm'
-local act = wezterm.action
-return {
-  keys = {
-    {
-      key = 'k', mods = 'SUPER',
-      action = act.Multiple{
-        act.ClearScrollback 'ScrollbackAndViewport',
-        act.SendKey{ key = 'L', mods = 'CTRL' },
-      },
-    },
-    {
-      key = 'k', mods = 'CMD',
-      action = act.Multiple{
-        act.ClearScrollback 'ScrollbackAndViewport',
-        act.SendKey{ key = 'L', mods = 'CTRL' },
-      },
-    },
-  },
-}
-'';
+ local wezterm = require 'wezterm'
+ local act = wezterm.action
+ return {
+   font = wezterm.font_with_fallback({ 'FiraCode Nerd Font', 'FiraCode Nerd Font Mono', 'Fira Code' }),
+   font_size = 18.0,
+   keys = {
+     {
+       key = 'k', mods = 'SUPER',
+       action = act.Multiple{
+         act.ClearScrollback 'ScrollbackAndViewport',
+         act.SendKey{ key = 'L', mods = 'CTRL' },
+       },
+     },
+     {
+       key = 'k', mods = 'CMD',
+       action = act.Multiple{
+         act.ClearScrollback 'ScrollbackAndViewport',
+         act.SendKey{ key = 'L', mods = 'CTRL' },
+       },
+     },
+   },
+ }
+ '';
+
 
   };
 }

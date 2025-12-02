@@ -21,6 +21,7 @@
       ollama
       sops
       age
+      nix-search-cli
 
       # fonts
       nerd-fonts.fira-code
