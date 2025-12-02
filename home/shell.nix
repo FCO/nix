@@ -5,11 +5,13 @@ _: {
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
-    # Welcome banner with pokemonsay on interactive shells
-    initExtra = ''
+    # Welcome banner rendering random Gen1 Pokemon (WezTerm)
+    initContent = ''
       if [[ $- == *i* ]]; then
-        if command -v pokemonsay >/dev/null 2>&1; then
-          pokemonsay "Seja bem-vindo $USER"
+        if command -v wezterm >/dev/null 2>&1; then
+          if [ -x "$HOME/.nix-profile/bin/pokewelcome" ]; then
+            "$HOME/.nix-profile/bin/pokewelcome" || true
+          fi
         fi
       fi
     '';

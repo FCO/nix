@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
   home = {
     packages = with pkgs; [
@@ -9,7 +9,7 @@
       tree
       ripgrep
       zoxide
-
+      git
       neovim
 
       # misc
@@ -21,13 +21,16 @@
       ollama
       sops
       age
- 
-       # fonts
-       nerd-fonts.fira-code
-       nerd-fonts.fira-mono
- 
-       pokemonsay
-       coreutils
+
+      # fonts
+      nerd-fonts.fira-code
+      nerd-fonts.fira-mono
+
+      # pokemon welcome assets + script from local flake
+      (inputs.pokewelcome.packages.${pkgs.system}.default)
+
+      coreutils
     ];
   };
 }
+

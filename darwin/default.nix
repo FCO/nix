@@ -53,6 +53,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
+    backupFileExtension = "backup";
 
     users.${primaryUser} = {
       imports = [
@@ -96,8 +97,11 @@
   };
   environment = {
     systemPath = [
+      "/usr/bin"
       "/opt/homebrew/bin"
+      "/nix/var/nix/profiles/default/bin"
     ];
     pathsToLink = [ "/Applications" ];
+    systemPackages = [ pkgs.openssh ];
   };
 }

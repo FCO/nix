@@ -17,6 +17,9 @@
 
     # secrets management via sops-nix
     sops-nix.url = "github:Mic92/sops-nix";
+
+    # local flake providing pokewelcome package (assets + script)
+    pokewelcome.url = "path:/Users/fernando/.local/pokewelcome-flake";
   };
 
   outputs =
