@@ -14,6 +14,9 @@
 
     # declarative homebrew management
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
+    # secrets management via sops-nix
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
   outputs =

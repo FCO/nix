@@ -28,4 +28,21 @@
       };
     };
   };
+
+  # LaunchAgent to run updates weekly
+  launchd.user.agents.update-all = {
+    serviceConfig = {
+      ProgramArguments = [
+        "/bin/zsh"
+        "-lc"
+        "update-all"
+      ];
+      StartCalendarInterval = [
+        { Weekday = 1; Hour = 3; Minute = 0; }
+      ];
+      StandardOutPath = "/Users/${primaryUser}/Library/Logs/update-all.log";
+      StandardErrorPath = "/Users/${primaryUser}/Library/Logs/update-all.err";
+      RunAtLoad = false;
+    };
+  };
 }

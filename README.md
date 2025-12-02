@@ -1,94 +1,115 @@
-# Nix macOS Starter
+# Nix macOS – FCO
 
-A beginner-friendly Nix configuration for macOS using flakes, nix-darwin, Home Manager, and Mise.
+Uma configuração Nix para macOS usando flakes, nix-darwin, Home Manager e nix-homebrew — ajustada para o host `FCO` (Apple Silicon) e usuário `fernando`.
 
-## About
+## Sobre
 
-A clean, well-documented starting point for managing your macOS system declaratively with Nix. Includes sensible defaults for development tools, shell configuration, and system settings.
+Este repositório declara: sistema (nix-darwin), Homebrew de forma declarativa (nix-homebrew) e ambiente do usuário (Home Manager), incluindo shell, Git, Neovim e ferramentas de desenvolvimento. Baseado no template "Nix macOS Starter", com adaptações para o host `FCO`.
 
-**Author:** Ben Gubler
+## Pré‑requisitos
 
-## Prerequisites
+1. Instale o Nix com o instalador da Determinate Systems (GUI para macOS). Reinicie o terminal após a instalação.
+2. Homebrew é gerenciado via nix-homebrew. Se já existir, será migrado; caso contrário, será instalado automaticamente.
 
-1. **Install Nix** using the [Determinate Systems installer](https://docs.determinate.systems/#products) (download the graphical installer for macOS). After installation, restart your terminal.
+## Início rápido
 
-**Note:** Homebrew is managed declaratively via nix-homebrew - if you already have it installed, it will auto-migrate. Otherwise, it's installed automatically.
-
-## Quick Start
-
-### 1. Clone and Configure
+1. Coloque este repositório em `~/.config/nix` e entre na pasta.
+2. Aplique a configuração:
 
 ```bash
-# Clone the repository
-git clone https://github.com/nebrelbug/nix-macos-starter ~/.config/nix
-cd ~/.config/nix
-```
+# Primeira vez, use o comando direto
+sudo darwin-rebuild switch --flake ~/.config/nix#FCO
 
-### 2. Customize Your Configuration
-
-**For Intel Mac Users:** Change the system architecture in `flake.nix` from `"aarch64-darwin"` to `"x86_64-darwin"` on line 28.
-
-**Replace all placeholders:**
-
-- `flake.nix`: `YOUR_USERNAME` (this sets the username for the entire system)
-- `home/git.nix`: `YOUR_NAME`, `YOUR_EMAIL`
-
-### 3. Apply the Configuration
-
-```bash
-# Build and switch to the configuration
-darwin-rebuild switch --flake .#my-macbook
-
-# Or use the alias after initial setup
+# Depois, use o atalho
 nix-switch
 ```
 
-## What's Included
+- Arquitetura atual: `aarch64-darwin` (Apple Silicon). Em Macs Intel, troque para `"x86_64-darwin"` em `flake.nix` (linha onde `system = "aarch64-darwin"`).
 
-**Development Tools**: [mise](https://mise.jdx.dev/) for Node.js/Python/Rust/etc., Zsh with Starship prompt, essential CLI tools (curl, vim, tmux, htop, tree, ripgrep, gh, zoxide), code quality tools (nil, biome, nixfmt-rfc-style)
+## O que está incluído
 
-**GUI Applications**: Cursor, Ghostty, VS Code, Zed, Raycast, CleanShot, HiddenBar, BetterDisplay, Discord, Slack, 1Password, Brave Browser, Obsidian, Spotify
+- Ferramentas de desenvolvimento (CLI via nixpkgs):
+  - Básico: `curl`, `vim` (alias para `nvim`), `htop`, `tree`, `ripgrep`, `zoxide`, `coreutils`
+  - Editor: `neovim` (config linkada de repositório externo pinado)
+  - Nix/formatters: `nil`, `biome`, `nixfmt-rfc-style`
+  - Multimídia/aux.: `yt-dlp`, `ffmpeg`, `ollama`
+  - Fontes: `nerd-fonts.fira-code`, `nerd-fonts.fira-mono`
+- Aplicativos (GUI via Homebrew casks):
+  - Sistema/UX: `aerospace`, `cleanshot`, `hiddenbar`, `raycast`, `betterdisplay`
+  - Dev: `wezterm`, `orbstack`
+  - Mensageria: `signal`
+  - Outros: `1password`, `zen` (browser)
+- Homebrew (brews): `docker`, `colima`, `opencode`, `op` (CLI do 1Password); tap `nikitabobko/tap`
+- macOS (nix-darwin):
+  - Touch ID para `sudo`, ajustes de Finder/Dock/NSGlobalDomain
+  - `environment.pathsToLink = [ "/Applications" ]` e PATH com `/opt/homebrew/bin`
+  - Usuário principal `fernando` + usuários adicionais (`fernanda`, `sophia`, `aline`) com shell Zsh
+- Shell: Zsh com completion, autosuggestion, syntax highlighting e prompt Starship (símbolo λ); aliases úteis (`nix-switch`, `vim`→`nvim` etc.)
+- Git: nome/email configurados, LFS habilitado, `init.defaultBranch = main`, `github.user = fernando`
+- Neovim: `~/.config/nvim` aponta para repo fixado em commit via `flake.nix`
 
-**System Configuration**: Git setup, macOS optimizations (Finder, Touch ID sudo), Nix settings (flakes, garbage collection), declarative Homebrew management
-
-## Project Structure
+## Estrutura do projeto
 
 ```
-nix-macos-starter/
-├── flake.nix                    # Main flake configuration and inputs
+~/.config/nix/
+├── flake.nix                     # Entradas e saída (darwinConfigurations."FCO")
 ├── darwin/
-│   ├── default.nix              # Core macOS system configuration
-│   ├── settings.nix             # macOS UI/UX preferences and defaults
-│   └── homebrew.nix             # GUI applications via Homebrew
+│   ├── default.nix               # Integra Home Manager e nix-homebrew; usuários e PATH
+│   ├── settings.nix              # Preferências do macOS e Touch ID sudo
+│   └── homebrew.nix              # Casks e brews do Homebrew declarativo
 ├── home/
-│   ├── default.nix              # Home Manager configuration entry point
-│   ├── packages.nix             # Package declarations and mise setup
-│   ├── git.nix                  # Git configuration
-│   ├── shell.nix                # Shell configuration
-│   └── mise.nix                 # Development runtime management
+│   ├── default.nix               # Entrada do Home Manager do usuário
+│   ├── packages.nix              # Pacotes CLI e fontes
+│   ├── git.nix                   # Configuração do Git
+│   ├── shell.nix                 # Zsh + Starship + aliases
+│   └── mise.nix                  # (Opcional) Config do Mise
 └── hosts/
-    └── my-macbook/
-        ├── configuration.nix    # Host-specific packages and settings
-        └── shell-functions.sh   # Custom shell scripts
+    └── FCO/
+        ├── configuration.nix     # Ajustes específicos do host (ex.: graphite-cli)
+        └── shell-functions.sh    # Funções de shell (ex.: cdroot)
 ```
 
-## Customization
+## Personalização
 
-**Add CLI Tools**: Edit `home/packages.nix` packages array  
-**Add GUI Apps**: Edit `darwin/homebrew.nix` casks array  
-**Add Development Tools**: Add `${pkgs.mise}/bin/mise use --global tool@version` to `home/mise.nix` activation script  
-**Host-Specific Config**: Use `hosts/my-macbook/configuration.nix` for machine-specific packages/apps and `custom-scripts.sh` for shell scripts
+- Pacotes CLI: edite `home/packages.nix`
+- Apps GUI (casks) e brews: edite `darwin/homebrew.nix`
+- Preferências do macOS: edite `darwin/settings.nix`
+- Shell e prompt: edite `home/shell.nix`
+- Git: edite `home/git.nix`
+- Neovim: atualize repo/commit em `flake.nix` (variável `nvimRepo`)
+- Host `FCO`: adicione itens em `hosts/FCO/configuration.nix` e funções em `hosts/FCO/shell-functions.sh`
 
-## Troubleshooting
+### Mise
+Mise não está habilitado nesta configuração. Node, Bun, Deno e outras ferramentas podem ser instaladas via nixpkgs ou Homebrew conforme necessário.
 
-**"Command not found"**: Restart terminal  
-**Permission denied**: Use `sudo darwin-rebuild switch --flake .#my-macbook`  
-**Homebrew apps not installing**: nix-homebrew handles this automatically; ensure `/opt/homebrew/bin` in PATH  
-**Git config not applying**: Replace all `YOUR_*` placeholders, re-run darwin-rebuild
+Rakudo/Raku é instalado via Homebrew (`rakudo`), e o binário `raku` ficará disponível no PATH.
 
-**Need help?** Check [Nix manual](https://nixos.org/manual/nix/stable/), [nix-darwin docs](https://github.com/LnL7/nix-darwin), [Home Manager options](https://nix-community.github.io/home-manager/options.html)
+## Dicas de uso
 
-## Credits
+- Comutação rápida: `nix-switch` (alias para `sudo darwin-rebuild switch --flake ~/.config/nix`)
+- Funções de shell: `cdroot` leva à raiz do repositório Git; `nix-clean` roda GC e limpa gerações antigas
+- Host FCO instala `graphite-cli` para fluxo de PRs empilhados (`gt`)
+- 1Password CLI: instale manualmente via `brew tap 1password/tap && brew install 1password-cli` se desejar usar `op` agora
 
-- [Ethan Niser](https://github.com/ethanniser) for his [config repo](https://github.com/ethanniser/config) which I used as a reference for this project.
-- David Haupt's excellent [tutorial series](https://davi.sh/blog/2024/01/nix-darwin/) which (although slightly outdated) helped me understand the basics of Nix.
+## Solução de problemas
+
+- "Command not found": reinicie o terminal após o primeiro switch
+- Permissão negada: rode com `sudo`
+- Apps Homebrew não instalam: verifique PATH para `/opt/homebrew/bin` (já exportado na configuração)
+- Git não aplica nome/email: confira `home/git.nix` e reexecute o switch
+
+## Nix Hygiene
+
+- GC automático semanal: `nix.gc` está configurado para apagar gerações com mais de 7 dias
+- Substituters: `cache.nixos.org`, `nix-community.cachix.org`, `cache.determinate.systems`
+- Trusted keys: configuradas para os substituters acima
+
+## Segredos
+
+- Sops‑nix integrado: pronto para declarar segredos criptografados com `age`
+- Próximos passos: gerar chave `age`, criar `secrets/*.yaml` e referenciar via `sops.secrets."name"`
+
+## Créditos
+
+- Template original: Nix macOS Starter por Ben Gubler
+- Referências: config do Ethan Niser e tutorial do David Haupt

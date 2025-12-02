@@ -39,9 +39,11 @@
       "docker"
       "colima"
       "opencode"
+      "rakudo"
     ];
     taps = [
       "nikitabobko/tap"
+      "1password/tap"
     ];
   };
 }

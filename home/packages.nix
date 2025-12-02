@@ -19,13 +19,15 @@
       yt-dlp
       ffmpeg
       ollama
-
-      # fonts
-      nerd-fonts.fira-code
-      nerd-fonts.fira-mono
-
-      pokemonsay
-      coreutils
+      sops
+      age
+ 
+       # fonts
+       nerd-fonts.fira-code
+       nerd-fonts.fira-mono
+ 
+       pokemonsay
+       coreutils
     ];
   };
 }
