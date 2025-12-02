@@ -29,6 +29,10 @@
       };
 
       NSGlobalDomain = {
+        # Dark Mode
+        AppleInterfaceStyle = "Dark";
+        AppleInterfaceStyleSwitchesAutomatically = false;
+
         NSAutomaticSpellingCorrectionEnabled = false;
         NSAutomaticCapitalizationEnabled = false;
         NSAutomaticPeriodSubstitutionEnabled = false;

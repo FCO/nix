@@ -62,12 +62,11 @@ in
 
 # Basic settings
 start-at-login = true
-log-level = "warn"
 
 # macOS integration
 [gaps]
-inner = 6
-outer = 12
+inner = { horizontal = 6, vertical = 6 }
+outer = { horizontal = 12, vertical = 12 }
 
 [mode.main.binding]
 # Focus
@@ -82,11 +81,11 @@ alt-shift-j = "move down"
 alt-shift-k = "move up"
 alt-shift-l = "move right"
 
-# Resize
-alt-ctrl-h = "resize left 50:5"
-alt-ctrl-j = "resize down 50:5"
-alt-ctrl-k = "resize up 50:5"
-alt-ctrl-l = "resize right 50:5"
+# Resize (width/height)
+alt-ctrl-h = "resize width -5"
+alt-ctrl-j = "resize height +5"
+alt-ctrl-k = "resize height -5"
+alt-ctrl-l = "resize width +5"
 
 # Workspace switching
 alt-1 = "workspace 1"
@@ -104,7 +103,7 @@ alt-shift-5 = "move-node-to-workspace 5"
 
 # Misc
 alt-q = "close"
-alt-enter = "layout floating"
+
 alt-space = "layout tiling"
 alt-f = "fullscreen"
 
