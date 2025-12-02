@@ -5,6 +5,15 @@ _: {
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
+    # Welcome banner with pokemonsay on interactive shells
+    initExtra = ''
+      if [[ $- == *i* ]]; then
+        if command -v pokemonsay >/dev/null 2>&1; then
+          pokemonsay "Seja bem-vindo $USER"
+        fi
+      fi
+    '';
+
     shellAliases = {
       la = "ls -la";
       ".." = "cd ..";

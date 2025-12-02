@@ -2,7 +2,6 @@
 {
   imports = [ ./common.nix ];
 
-  home.packages = with pkgs; [ tree pokemonsay ];
-
-  programs.zsh.shellAliases = { lsla = "ls -la"; };
+  # extra per-user (optional)
+  home.packages = with pkgs; [ ];
 }

@@ -45,4 +45,22 @@
       RunAtLoad = false;
     };
   };
+
+  # On switch: For newly-created family users (no home yet), require password change at next login
+  system.activationScripts.requirePasswordChangeForNewUsers.text = ''
+    set -e
+
+    for u in fernanda sophia aline; do
+      if id -u "$u" >/dev/null 2>&1; then
+        # Consider "new" if no home directory exists yet
+        if [ ! -d "/Users/$u" ]; then
+          echo "[activation] Marking $u to change password at next login"
+          /usr/bin/pwpolicy -u "$u" -setpolicy "newPasswordRequired=1" || true
+        else
+          echo "[activation] Skipping $u (home exists)"
+        fi
+      fi
+    done
+  '';
+
 }

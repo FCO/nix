@@ -2,5 +2,5 @@
 {
   imports = [ ./common.nix ];
 
-  home.packages = with pkgs; [ htop zoxide ];
+  home.packages = with pkgs; [ ];
 }

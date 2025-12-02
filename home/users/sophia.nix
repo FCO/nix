@@ -2,5 +2,5 @@
 {
   imports = [ ./common.nix ];
 
-  home.packages = with pkgs; [ neovim ripgrep ];
+  home.packages = with pkgs; [ ];
 }
