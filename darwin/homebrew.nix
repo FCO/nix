@@ -24,6 +24,7 @@
 
       # dev
       "wezterm"
+      "neovide"
 
       # messaging
       "signal"
