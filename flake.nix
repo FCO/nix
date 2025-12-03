@@ -49,5 +49,11 @@
         specialArgs = { inherit inputs self primaryUser nvimRepo; };
       };
 
+      # Expose Home Manager standalone configuration for 'hm' alias
+      homeConfigurations."fernando" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+        modules = [ ./home ];
+        extraSpecialArgs = { inherit inputs self primaryUser nvimRepo; };
+      };
     };
 }

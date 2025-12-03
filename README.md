@@ -14,15 +14,24 @@ Este repositório declara: sistema (nix-darwin), Homebrew de forma declarativa (
 ## Início rápido
 
 1. Coloque este repositório em `~/.config/nix` e entre na pasta.
-2. Aplique a configuração:
+2. Aplique a configuração do sistema (nix-darwin) e do usuário (Home Manager):
 
 ```bash
 # Primeira vez, use o comando direto
 sudo darwin-rebuild switch --flake ~/.config/nix#FCO
 
-# Depois, use o atalho
-nix-switch
+# Depois, use os atalhos
+nix-switch            # sistema (nix-darwin)
+hm switch             # usuário (Home Manager)
 ```
+
+### Home Manager consolidado
+- O Home Manager está integrado neste flake em `~/.config/nix`.
+- Alias disponível: `hm='home-manager --flake ~/.config/nix#fernando'`.
+- Exemplos:
+  - `hm news`
+  - `hm switch`
+  - `home-manager generations`  # lista gerações
 
 - Arquitetura atual: `aarch64-darwin` (Apple Silicon). Em Macs Intel, troque para `"x86_64-darwin"` em `flake.nix` (linha onde `system = "aarch64-darwin"`).
 

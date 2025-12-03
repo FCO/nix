@@ -31,6 +31,9 @@
       (inputs.pokewelcome.packages.${pkgs.system}.default)
 
       coreutils
+
+      # Home Manager CLI on PATH
+      (inputs.home-manager.packages.${pkgs.system}.default)
     ];
   };
 }
