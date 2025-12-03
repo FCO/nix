@@ -31,6 +31,7 @@
       # other
       "1password"
       "zen"
+      "setapp"
 
       "orbstack"
 
