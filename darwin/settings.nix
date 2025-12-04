@@ -10,22 +10,38 @@
 
     startup.chime = false;
 
+    activationScripts.ensureScreenshotsDir.text = ''
+      mkdir -p /Users/fernando/Desktop/Screenshots
+    '';
+
     defaults = {
       loginwindow = {
         GuestEnabled = false;
         DisableConsoleAccess = true;
       };
-
+      
       finder = {
         AppleShowAllFiles = true; # hidden files
         AppleShowAllExtensions = true; # file extensions
         _FXShowPosixPathInTitle = true; # title bar full path
         ShowPathbar = true; # breadcrumb nav at bottom
         ShowStatusBar = true; # file count & disk space
+        ShowHardDrivesOnDesktop = false;
+        ShowExternalHardDrivesOnDesktop = true;
+        ShowRemovableMediaOnDesktop = true;
       };
-
+      
       dock = {
         autohide = true;
+        orientation = "right";
+        magnification = true;
+        largesize = 55;
+      };
+
+      screencapture = {
+        location = "/Users/fernando/Desktop/Screenshots";
+        type = "png";
+        disable-shadow = false;
       };
 
       NSGlobalDomain = {
