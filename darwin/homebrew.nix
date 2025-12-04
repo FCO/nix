@@ -24,10 +24,13 @@
 
       # dev
       "wezterm"
-      "neovide"
 
-      # messaging
-      "signal"
+       # messaging
+       "signal"
+
+       # AI
+       "chatgpt"
+
 
       # other
       "1password"

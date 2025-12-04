@@ -13,13 +13,13 @@ _: {
         alias cd='z'
       fi
 
-      if [[ $- == *i* ]]; then
-        if command -v wezterm >/dev/null 2>&1; then
-          if [ -x "$HOME/.nix-profile/bin/pokewelcome" ]; then
-            "$HOME/.nix-profile/bin/pokewelcome" || true
-          fi
-        fi
-      fi
+       if [[ $- == *i* ]]; then
+         if command -v wezterm >/dev/null 2>&1; then
+           if command -v pokewelcome >/dev/null 2>&1; then
+             pokewelcome || true
+           fi
+         fi
+       fi
     '';
 
     shellAliases = {
