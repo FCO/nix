@@ -6,21 +6,32 @@ _: {
     syntaxHighlighting.enable = true;
 
     # Welcome banner rendering random Gen1 Pokemon (WezTerm)
-    initContent = ''
-      # zoxide init and alias cd -> z
-      if command -v zoxide >/dev/null 2>&1; then
-        eval "$(zoxide init zsh)"
-        alias cd='z'
-      fi
+      initContent = ''
+        # zoxide init and alias cd -> z
+        if command -v zoxide >/dev/null 2>&1; then
+          eval "$(zoxide init zsh)"
+          alias cd='z'
+        fi
 
-       if [[ $- == *i* ]]; then
-         if command -v wezterm >/dev/null 2>&1; then
-           if command -v pokewelcome >/dev/null 2>&1; then
-             pokewelcome || true
-           fi
-         fi
-       fi
-    '';
+        # Ensure Raku home bin on PATH (for mi6)
+        export PATH="$HOME/.raku/bin:$PATH"
+
+        # Override fastfetch to always pick a random logo via Raku
+        if command -v fastfetch >/dev/null 2>&1; then
+          fastfetch() {
+            command fastfetch --logo "$(raku -e 'say "%*ENV<HOME>/.local/share/pokemon-gen1/".IO.dir.pick.absolute')" --logo-type iterm "$@"
+          }
+        fi
+
+        if [[ $- == *i* ]]; then
+          if command -v wezterm >/dev/null 2>&1; then
+            if command -v fastfetch >/dev/null 2>&1; then
+              fastfetch || true
+            fi
+          fi
+        fi
+      '';
+
 
     shellAliases = {
       la = "ls -la";

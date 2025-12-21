@@ -46,21 +46,65 @@
     };
   };
 
-  # On switch: For newly-created family users (no home yet), require password change at next login
-  system.activationScripts.requirePasswordChangeForNewUsers.text = ''
-    set -e
+  # Homepage Dashboard: LaunchDaemon at boot
+  launchd.daemons.homepage-dashboard = {
+    serviceConfig = {
+      ProgramArguments = [ "${pkgs.homepage-dashboard}/bin/homepage" ];
+      EnvironmentVariables = {
+        PORT = "3000";
+        HOMEPAGE_CONFIG_DIR = "/var/lib/homepage-dashboard";
+        NIXPKGS_HOMEPAGE_CACHE_DIR = "/var/cache/homepage-dashboard";
+      };
+      WorkingDirectory = "/var/lib/homepage-dashboard";
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/var/log/homepage-dashboard.log";
+      StandardErrorPath = "/var/log/homepage-dashboard.err";
+    };
+  };
 
-    for u in fernanda sophia aline; do
-      if id -u "$u" >/dev/null 2>&1; then
-        # Consider "new" if no home directory exists yet
-        if [ ! -d "/Users/$u" ]; then
-          echo "[activation] Marking $u to change password at next login"
-          /usr/bin/pwpolicy -u "$u" -setpolicy "newPasswordRequired=1" || true
-        else
-          echo "[activation] Skipping $u (home exists)"
-        fi
-      fi
-    done
+  # Ensure homepage config/cache directories exist
+  system.activationScripts.homepage-dashboard.text = ''
+    mkdir -p /var/lib/homepage-dashboard
+    mkdir -p /var/cache/homepage-dashboard
   '';
 
-}
+  # On switch: For newly-created family users (no home yet), require password change at next login
+   system.activationScripts.requirePasswordChangeForNewUsers.text = ''
+     set -e
+
+     for u in fernanda sophia aline; do
+       if id -u "$u" >/dev/null 2>&1; then
+         # Consider "new" if no home directory exists yet
+         if [ ! -d "/Users/$u" ]; then
+           echo "[activation] Marking $u to change password at next login"
+           /usr/bin/pwpolicy -u "$u" -setpolicy "newPasswordRequired=1" || true
+         else
+           echo "[activation] Skipping $u (home exists)"
+         fi
+       fi
+     done
+   '';
+
+   # Enable Screen Sharing, Remote Management (ARD) and SMB service
+   system.activationScripts.enableSharing.text = ''
+     set -e
+
+     echo "[activation] Enabling Screen Sharing"
+     /bin/launchctl enable system/com.apple.screensharing || true
+     /bin/launchctl kickstart -k system/com.apple.screensharing || true
+
+     echo "[activation] Enabling Remote Management (ARD)"
+     KICK="/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart"
+     if [ -x "$KICK" ]; then
+       "$KICK" -activate -configure -access -on -users "${primaryUser}" -privs -all -restart -agent || true
+     else
+       echo "[activation] ARD kickstart not found"
+     fi
+
+     echo "[activation] Enabling SMB (file sharing) daemon"
+     /bin/launchctl enable system/com.apple.smbd || true
+     /bin/launchctl kickstart -k system/com.apple.smbd || true
+   '';
+
+ }

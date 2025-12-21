@@ -19,10 +19,10 @@
       "aerospace"
       "cleanshot"
       "hiddenbar"
-      "raycast"
-      "betterdisplay"
-
-      # dev
+       "raycast"
+       "betterdisplay"
+ 
+        # dev
       "wezterm"
 
        # messaging
@@ -39,16 +39,28 @@
 
       "orbstack"
 
+      "utm"
+
+      "nordvpn"
+
     ];
     brews = [
       "docker"
       "colima"
       "opencode"
       "rakudo"
+      "bat"
+      "fzf"
     ];
     taps = [
       "nikitabobko/tap"
       "1password/tap"
+      "mas-cli/tap"
     ];
+
+    masApps = {
+      # Amphetamine (App Store)
+      "Amphetamine" = 937984704;
+    };
   };
 }

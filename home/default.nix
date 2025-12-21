@@ -17,6 +17,8 @@ in
     stateVersion = "25.05";
     sessionVariables = {
       # shared environment variables
+      EDITOR = "nvim";
+      VISUAL = "nvim";
     };
 
     # Ensure ~/Projects exists and clone/update selected GitHub repos
@@ -52,6 +54,25 @@ in
       done
     '';
 
+
+    # Install Raku App::Mi6 via zef
+    activation.installRakuMi6 = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+      set -euo pipefail
+      ZEF_BIN="${pkgs.zef}/bin/zef"
+      RAKU_BIN="${pkgs.rakudo}/bin/raku"
+      export HOME="${config.home.homeDirectory}"
+      if "$RAKU_BIN" -e 'use App::Mi6'; then
+        echo "[raku] App::Mi6 already available"
+      else
+        echo "[raku] Installing App::Mi6 + Fez via zef (home repo)"
+        "$ZEF_BIN" install --install-to=home --/test --force-install Fez App::Mi6 || true
+        if "$RAKU_BIN" -e 'use App::Mi6'; then
+          echo "[raku] App::Mi6 installed successfully in ~/.raku"
+        else
+          echo "[raku] Failed to load App::Mi6 after install"
+        fi
+      fi
+    '';
 
     # create .hushlogin file to suppress login messages
     file.".hushlogin".text = "";

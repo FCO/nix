@@ -30,6 +30,11 @@
       # pokemon welcome assets + script from local flake
       (inputs.pokewelcome.packages.${pkgs.system}.default)
 
+      # fastfetch + raku for startup banner
+      fastfetch
+      rakudo
+      zef
+
       coreutils
 
       # Home Manager CLI on PATH

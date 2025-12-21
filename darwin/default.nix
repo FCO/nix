@@ -95,13 +95,28 @@
     home = "/Users/aline";
     shell = pkgs.zsh;
   };
+   services.openssh.enable = true;
+
+    environment.etc."pf-nix.conf".text = ''
+      set skip on lo0
+      pass out all keep state
+      pass in proto tcp from any to self port { 22 445 139 5900 3283 3689 }
+      pass in proto udp from any to self port { 5353 }
+    '';
+
+    system.activationScripts.pf.text = ''
+      /sbin/pfctl -f /etc/pf-nix.conf || true
+      /sbin/pfctl -e || true
+    '';
+
   environment = {
     systemPath = [
       "/usr/bin"
       "/opt/homebrew/bin"
+      "/run/current-system/sw/bin"
       "/nix/var/nix/profiles/default/bin"
     ];
     pathsToLink = [ "/Applications" ];
-    systemPackages = [ pkgs.openssh ];
+    systemPackages = [ pkgs.openssh pkgs.homepage-dashboard ];
   };
 }
