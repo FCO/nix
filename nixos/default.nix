@@ -1,21 +1,42 @@
 { pkgs, inputs, self, primaryUser, nvimRepo, ... }:
 {
-  # imports removed for evaluation simplicity
-  # imports = [
-  #   inputs.sops-nix.nixosModules.sops
-  # ];
+  imports = [
+    inputs.sops-nix.nixosModules.sops
+  ];
 
   # Common services for VM
   services.openssh.enable = true;
 
-  # Samba disabled for evaluation simplicity
-  # services.samba.enable = false;
+  # Samba (SMB) server
+  services.samba = {
+    enable = true;
+    settings = {
+      global = {
+        "workgroup" = "WORKGROUP";
+        "server string" = "VM Samba";
+        "netbios name" = "VM";
+        "security" = "user";
+        "map to guest" = "Bad User";
+      };
+      shares = {
+        Public = {
+          path = "/srv/samba/Public";
+          browseable = "yes";
+          "read only" = "no";
+          "guest ok" = "yes";
+          "create mask" = "0644";
+          "directory mask" = "0755";
+        };
+      };
+    };
+  };
 
 
 
   # Enable xrdp for remote desktop (RDP)
-  # Disable xrdp for simpler evaluation; re-enable when needed
-  services.xrdp.enable = false;
+  # Enable xrdp for remote desktop (RDP)
+  services.xrdp.enable = true;
+  services.xrdp.defaultWindowManager = "xterm";
 
   # Firewall: open common ports similar to mac and Samba/RDP
   networking.firewall = {
@@ -24,13 +45,24 @@
     allowedUDPPorts = [ 5353 ];
   };
 
+  # Ensure share directory exists and is owned by users group
+  systemd.tmpfiles.rules = [
+    "d /srv/samba/Public 0775 root users - -"
+  ];
+
   users.users.${primaryUser} = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     shell = pkgs.zsh;
   };
 
-  # Home Manager inside NixOS disabled for flake check simplicity
-  # environment.systemPackages minimal
+  # Home Manager inside NixOS
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    extraSpecialArgs = { inherit inputs self primaryUser nvimRepo; };
+    users = {};
+  };
+
   environment.systemPackages = [ pkgs.openssh ];
 }

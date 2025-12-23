@@ -46,10 +46,11 @@
 
        nixosConfigurations."nixos" = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          modules = [
+           modules = [
              ./nixos
              ./hosts/nixos/configuration.nix
-          ];
+             home-manager.nixosModules.home-manager
+           ];
           specialArgs = { inherit inputs self primaryUser nvimRepo; };
         };
      };
