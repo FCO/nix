@@ -18,15 +18,13 @@
         "security" = "user";
         "map to guest" = "Bad User";
       };
-      shares = {
-        Public = {
-          path = "/srv/samba/Public";
-          browseable = "yes";
-          "read only" = "no";
-          "guest ok" = "yes";
-          "create mask" = "0644";
-          "directory mask" = "0755";
-        };
+      "Public" = {
+        path = "/srv/samba/Public";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "yes";
+        "create mask" = "0644";
+        "directory mask" = "0755";
       };
     };
   };

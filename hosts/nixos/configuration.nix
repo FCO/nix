@@ -18,6 +18,23 @@
 
   # Wayland sessions and desktop stack
   programs.uwsm.enable = true;
+  programs.uwsm.waylandCompositors = {
+    hyprland = {
+      prettyName = "Hyprland";
+      comment = "Hyprland compositor managed by UWSM";
+      binPath = "/run/current-system/sw/bin/Hyprland";
+    };
+    sway = {
+      prettyName = "SwayFX";
+      comment = "SwayFX (Sway fork) compositor managed by UWSM";
+      binPath = "/run/current-system/sw/bin/sway";
+    };
+    niri = {
+      prettyName = "Niri";
+      comment = "Niri compositor managed by UWSM";
+      binPath = "/run/current-system/sw/bin/niri";
+    };
+  };
 
   programs.sway = {
     enable = true;
@@ -52,9 +69,8 @@
   # Fonts and Wayland utilities
   fonts.packages = with pkgs; [
     noto-fonts
-    noto-fonts-cjk
+    noto-fonts-cjk-sans
     noto-fonts-emoji
-    fira
     fira-code
     nerd-fonts.fira-code
     nerd-fonts.fira-mono

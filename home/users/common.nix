@@ -22,7 +22,7 @@
 
   # macOS-only: link to system wallpapers
   home.file."Wallpapers" = lib.mkIf pkgs.stdenv.isDarwin {
-    source = lib.file.mkOutOfStoreSymlink "/System/Library/Desktop Pictures";
+    source = config.lib.file.mkOutOfStoreSymlink "/System/Library/Desktop Pictures";
   };
 }
 
