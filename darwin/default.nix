@@ -61,16 +61,16 @@
       ];
     };
 
-    # family users
-    users.fernanda = {
-      imports = [ ../home/users/fernanda.nix ];
-    };
-    users.sophia = {
-      imports = [ ../home/users/sophia.nix ];
-    };
-    users.aline = {
-      imports = [ ../home/users/aline.nix ];
-    };
+    # family users temporarily disabled on macOS to debug HM fonts recursion
+    # users.fernanda = {
+    #   imports = [ ../home/users/fernanda.nix ];
+    # };
+    # users.sophia = {
+    #   imports = [ ../home/users/sophia.nix ];
+    # };
+    # users.aline = {
+    #   imports = [ ../home/users/aline.nix ];
+    # };
 
     extraSpecialArgs = {
       inherit inputs self primaryUser nvimRepo;

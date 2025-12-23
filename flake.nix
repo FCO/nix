@@ -38,10 +38,19 @@
         specialArgs = { inherit inputs self primaryUser nvimRepo; };
       };
 
-      homeConfigurations."${primaryUser}" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-        modules = [ ./home ];
-        extraSpecialArgs = { inherit inputs self primaryUser nvimRepo; };
-      };
-    };
+       homeConfigurations."${primaryUser}" = home-manager.lib.homeManagerConfiguration {
+         pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+         modules = [ ./home ];
+         extraSpecialArgs = { inherit inputs self primaryUser nvimRepo; };
+       };
+
+       nixosConfigurations."nixos" = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+             ./nixos
+             ./hosts/nixos/configuration.nix
+          ];
+          specialArgs = { inherit inputs self primaryUser nvimRepo; };
+        };
+     };
 }

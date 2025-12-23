@@ -9,11 +9,11 @@ in
     ./packages.nix
     ./git.nix
     ./shell.nix
-  ];
+  ] ++ lib.optional (builtins.pathExists ./wayland.nix) ./wayland.nix;
 
   home = {
     username = primaryUser;
-    homeDirectory = "/Users/${primaryUser}";
+    homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${primaryUser}" else "/home/${primaryUser}";
     stateVersion = "25.05";
     sessionVariables = {
       # shared environment variables
@@ -28,7 +28,11 @@ in
       mkdir -p "$PROJECTS_DIR"
 
        GIT_BIN="${pkgs.git}/bin/git"
-       export PATH="/usr/bin:/opt/homebrew/bin:/nix/var/nix/profiles/default/bin:$PATH"
+       if [ "$(uname)" = "Darwin" ]; then
+         export PATH="/usr/bin:/opt/homebrew/bin:/nix/var/nix/profiles/default/bin:$PATH"
+       else
+         export PATH="/usr/bin:/nix/var/nix/profiles/default/bin:$PATH"
+       fi
        if ! command -v ssh >/dev/null 2>&1; then
          echo "[ensureProjects] ssh not found in PATH; skipping repo updates"
          exit 0
@@ -78,7 +82,8 @@ in
     file.".hushlogin".text = "";
     file.".config/nvim".source = nvimRepo;
     # Aerospace window manager configuration (embed inline to avoid git source issues)
-    file.".aerospace.toml".text = ''
+    file.".aerospace.toml" = lib.mkIf pkgs.stdenv.isDarwin {
+      text = ''
 # Aerospace config generated via Home Manager
 # Reference: https://nikitabobko.github.io/AeroSpace/
 
@@ -138,6 +143,7 @@ run = ["layout floating"]
 if.app-id = "com.apple.systempreferences"
 run = ["layout floating"]
 '';
+    };
 
     file.".wezterm.lua".text = ''
  local wezterm = require 'wezterm'
@@ -165,30 +171,8 @@ run = ["layout floating"]
  '';
 
 
-    file.".config/wezterm/wezterm.lua".text = ''
- local wezterm = require 'wezterm'
- local act = wezterm.action
- return {
-   font = wezterm.font_with_fallback({ 'FiraCode Nerd Font', 'FiraCode Nerd Font Mono', 'Fira Code' }),
-   font_size = 18.0,
-   keys = {
-     {
-       key = 'k', mods = 'SUPER',
-       action = act.Multiple{
-         act.ClearScrollback 'ScrollbackAndViewport',
-         act.SendKey{ key = 'L', mods = 'CTRL' },
-       },
-     },
-     {
-       key = 'k', mods = 'CMD',
-       action = act.Multiple{
-         act.ClearScrollback 'ScrollbackAndViewport',
-         act.SendKey{ key = 'L', mods = 'CTRL' },
-       },
-     },
-   },
- }
- '';
+    # Duplicate wezterm config skipped; rely on .wezterm.lua
+
 
 
   };

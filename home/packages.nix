@@ -1,7 +1,7 @@
 { pkgs, inputs, ... }:
 {
   home = {
-    packages = with pkgs; [
+    packages = (with pkgs; [
       # dev tools
       curl
       vim
@@ -18,28 +18,22 @@
       nixfmt-rfc-style
       yt-dlp
       ffmpeg
-      ollama
       sops
       age
       nix-search-cli
 
-      # fonts
-      nerd-fonts.fira-code
-      nerd-fonts.fira-mono
-
-      # pokemon welcome assets + script from local flake
-      (inputs.pokewelcome.packages.${pkgs.system}.default)
-
-      # fastfetch + raku for startup banner
+      # fastfetch/neofetch + raku for startup banner
       fastfetch
+      neofetch
       rakudo
       zef
 
       coreutils
-
-      # Home Manager CLI on PATH
-      (inputs.home-manager.packages.${pkgs.system}.default)
-    ];
+    ])
+    ++ pkgs.lib.optionals (!pkgs.stdenv.isDarwin) (with pkgs; [
+      pokemon-colorscripts
+      ollama
+    ]);
   };
 }
 

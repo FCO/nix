@@ -86,14 +86,14 @@
      done
    '';
 
-   # Enable Screen Sharing, Remote Management (ARD) and SMB service
+  # Enable Screen Sharing, Remote Management (ARD) and SMB service
    system.activationScripts.enableSharing.text = ''
      set -e
-
+ 
      echo "[activation] Enabling Screen Sharing"
      /bin/launchctl enable system/com.apple.screensharing || true
      /bin/launchctl kickstart -k system/com.apple.screensharing || true
-
+ 
      echo "[activation] Enabling Remote Management (ARD)"
      KICK="/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart"
      if [ -x "$KICK" ]; then
@@ -101,10 +101,18 @@
      else
        echo "[activation] ARD kickstart not found"
      fi
-
+ 
      echo "[activation] Enabling SMB (file sharing) daemon"
      /bin/launchctl enable system/com.apple.smbd || true
      /bin/launchctl kickstart -k system/com.apple.smbd || true
+ 
+     echo "[activation] Configuring SMB share 'Public'"
+     if /usr/sbin/sharing -l | /usr/bin/grep -q "^Public"; then
+       echo "[activation] SMB share 'Public' already exists"
+     else
+       /usr/sbin/sharing -a "/Users/${primaryUser}/Public" -S "Public" -s || true
+     fi
    '';
+
 
  }
